@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAIZU X3 WAQAS</title>
+    <title>Approval Request</title>
     <style>
         body {
             margin: 0;
@@ -18,31 +18,31 @@
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
 
-        .glowing-box {
-            position: relative;
-            display: inline-block;
-            padding: 20px 40px;
-            border: 2px solid transparent;
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
             border-radius: 8px;
-            margin-bottom: 1em;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
         }
 
-        .glowing-box h1 {
-            font-size: 2.5em;
-            font-weight: bold;
+        img {
+            max-width: 80%;
+            height: auto;
+            margin-bottom: 20px;
+            border: 3px solid #ffeb3b;
+            border-radius: 8px;
+        }
+
+        .key {
+            font-size: 1.5em;
+            margin: 10px 0;
             color: #ffeb3b;
-            margin: 0;
-            text-shadow: 0 0 10px #ffeb3b, 0 0 15px #ff9800;
         }
 
         .button {
-            display: block;
+            display: inline-block;
             padding: 10px 20px;
             background-color: red;
             color: white;
@@ -50,93 +50,55 @@
             font-size: 1.2em;
             cursor: pointer;
             border-radius: 5px;
-            transition: 0.3s;
-            margin: 10px auto;
-            width: 200px;
+            margin: 10px;
         }
 
         .button:hover {
-            box-shadow: 0 0 10px 3px red, 0 0 15px 5px #ff4d4d;
-        }
-
-        .new-page {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 20px;
-            overflow: hidden;
-        }
-
-        .contact-links {
-            margin-top: 20px;
-            font-size: 1em;
-        }
-
-        .contact-links a {
-            color: #ffeb3b;
-            text-decoration: none;
-            margin: 5px;
-            display: inline-block;
-            transition: color 0.3s;
-        }
-
-        .contact-links a:hover {
-            color: white;
+            background-color: #ff4d4d;
         }
     </style>
 </head>
 <body>
-    <div class="glowing-box">
-        <h1>FAIZU X3 WAQAS</h1>
-    </div>
-    <p>Select an Option:</p>
-    <button class="button" onclick="showApprovalPage()">Send Approval</button>
-
-    <div class="new-page" id="approvalPage">
-        <h2>Approval Request</h2>
-        <img src="https://iili.io/2B97Tnj.jpg" alt="Approval Image" style="max-width: 80%; height: auto; margin-bottom: 20px; border: 3px solid #ffeb3b; border-radius: 8px;">
-        <input type="text" id="userKey" placeholder="Enter Your Key">
-        <button class="button" onclick="sendApproval()">Send Approval</button>
-        <button class="button" onclick="closeApprovalPage()">Close</button>
-        <div class="contact-links">
-            <h2>Contact Us:</h2>
-            <a href="https://www.facebook.com/The.drugs.ft.chadwick.67" target="_blank">Contact</a>
+    <div class="container">
+        <img src="https://iili.io/2B97Tnj.jpg" alt="Approval Image">
+        <div class="key">This is your key - <span id="uniqueKey"></span></div>
+        <button class="button" id="sendApproval">Send Approval</button>
+        <div class="contact">
+            <h3>Contact:</h3>
+            <a href="https://www.facebook.com/The.drugs.ft.chadwick.67" target="_blank" style="color: #ffeb3b;">Message me on Facebook</a>
         </div>
     </div>
 
     <script>
-        function showApprovalPage() {
-            document.getElementById('approvalPage').style.display = 'flex';
+        // Generate a unique key for approval
+        function generateUniqueKey() {
+            const key = Math.random().toString(36).substr(2, 9);
+            document.getElementById('uniqueKey').innerText = key;
+            return key;
         }
 
-        function closeApprovalPage() {
-            document.getElementById('approvalPage').style.display = 'none';
-        }
-
-        function sendApproval() {
-            const userKey = document.getElementById('userKey').value;
+        // Send the approval
+        document.getElementById('sendApproval').onclick = function() {
+            const key = document.getElementById('uniqueKey').innerText;
+            // Send the key to the server (make sure you set up your endpoint correctly)
             fetch('/send_approval', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ key: userKey }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-                closeApprovalPage();
-            });
-        }
+                body: JSON.stringify({ key: key })
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      alert('Approval sent! Please check your admin panel.');
+                  } else {
+                      alert('Failed to send approval. Try again later.');
+                  }
+              });
+        };
+
+        // Generate key on page load
+        window.onload = generateUniqueKey;
     </script>
 </body>
 </html>
