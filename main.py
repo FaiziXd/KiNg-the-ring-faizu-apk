@@ -1,18 +1,25 @@
 from flask import Flask, request, jsonify
+import json
 
-# Other imports and app initialization...
+app = Flask(__name__)
 
+# Endpoint to send approval
 @app.route('/send_approval', methods=['POST'])
 def send_approval():
     data = request.json
     unique_key = data.get('key')
 
-    # Here, you can add logic to save the key in approvals.json
-    # Example:
-    with open('approvals.json', 'r+') as f:
-        approvals = json.load(f)
-        approvals.append({'key': unique_key, 'status': 'pending'})
-        f.seek(0)
-        json.dump(approvals, f)
+    # Append the approval request to approvals.json
+    try:
+        with open('approvals.json', 'r+') as f:
+            approvals = json.load(f)
+            approvals.append({'key': unique_key, 'status': 'pending'})  # Add new approval
+            f.seek(0)  # Move to the start of the file to overwrite
+            json.dump(approvals, f, indent=4)  # Save changes with pretty formatting
+            f.truncate()  # Remove any leftover data
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
 
-    return jsonify({'success': True})
+if __name__ == '__main__':
+    app.run(debug=True)
