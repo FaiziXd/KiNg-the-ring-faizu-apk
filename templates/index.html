@@ -1,1 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approval Page</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-image: url('https://raw.githubusercontent.com/FaiziXd/HERF-2-FAIZU-APK/main/3e8501ae75d43fb7f689ecd103cd45de.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .approval-section {
+            margin-top: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            margin: 10px auto;
+            width: 200px;
+        }
+        .button:hover {
+            box-shadow: 0 0 10px 3px red, 0 0 15px 5px #ff4d4d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Send Approval</h1>
+    <div class="approval-section">
+        <img src="https://iili.io/2B97Tnj.jpg" alt="Approval Image" style="max-width: 100%; height: auto; margin-bottom: 20px;">
+        <form method="post" action="/send_approval">
+            <input type="text" name="approval_key" placeholder="Enter Approval Key" required>
+            <button class="button" type="submit">Send Approval</button>
+        </form>
+    </div>
+</body>
+</html>
 
