@@ -3,102 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Approval Request</title>
+    <title>Approval Page</title>
     <style>
         body {
-            margin: 0;
-            height: 100vh;
-            background-image: url('https://raw.githubusercontent.com/FaiziXd/HERF-2-FAIZU-APK/main/3e8501ae75d43fb7f689ecd103cd45de.jpg');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             text-align: center;
         }
-
-        .container {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-        }
-
         img {
-            max-width: 80%;
+            width: 200px; /* Adjust as needed */
             height: auto;
-            margin-bottom: 20px;
-            border: 3px solid #ffeb3b;
-            border-radius: 8px;
-        }
-
-        .key {
-            font-size: 1.5em;
-            margin: 10px 0;
-            color: #ffeb3b;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: red;
-            color: white;
-            border: none;
-            font-size: 1.2em;
-            cursor: pointer;
-            border-radius: 5px;
-            margin: 10px;
-        }
-
-        .button:hover {
-            background-color: #ff4d4d;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://iili.io/2B97Tnj.jpg" alt="Approval Image">
-        <div class="key">This is your key - <span id="uniqueKey"></span></div>
-        <button class="button" id="sendApproval">Send Approval</button>
-        <div class="contact">
-            <h3>Contact:</h3>
-            <a href="https://www.facebook.com/The.drugs.ft.chadwick.67" target="_blank" style="color: #ffeb3b;">Message me on Facebook</a>
-        </div>
-    </div>
+    <h1>Request Approval</h1>
+    <img src="https://iili.io/2B97Tnj.jpg" alt="Approval Image">
+    <p>This is your key - <span id="unique-key"></span></p>
+    <button id="send-approval">Send Approval</button>
+    <p>Contact: <a href="https://www.facebook.com/The.drugs.ft.chadwick.67">Facebook</a></p>
 
     <script>
-        // Generate a unique key for approval
-        function generateUniqueKey() {
-            const key = Math.random().toString(36).substr(2, 9);
-            document.getElementById('uniqueKey').innerText = key;
-            return key;
-        }
+        // Generate a unique key
+        const uniqueKey = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+        document.getElementById('unique-key').innerText = uniqueKey;
 
-        // Send the approval
-        document.getElementById('sendApproval').onclick = function() {
-            const key = document.getElementById('uniqueKey').innerText;
-            // Send the key to the server (make sure you set up your endpoint correctly)
+        document.getElementById('send-approval').onclick = function() {
             fetch('/send_approval', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ key: key })
-            }).then(response => response.json())
-              .then(data => {
-                  if (data.success) {
-                      alert('Approval sent! Please check your admin panel.');
-                  } else {
-                      alert('Failed to send approval. Try again later.');
-                  }
-              });
+                body: JSON.stringify({ key: uniqueKey })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Approval request sent! Your key: ' + uniqueKey);
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
         };
-
-        // Generate key on page load
-        window.onload = generateUniqueKey;
     </script>
 </body>
 </html>
