@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Approval Page</title>
+    <title>FAIZU X3 WAQAS</title>
     <style>
         body {
             margin: 0;
@@ -21,10 +21,28 @@
             position: relative;
             overflow: hidden;
         }
-        .approval-section {
-            margin-top: 20px;
+
+        .glowing-box {
+            position: relative;
+            display: inline-block;
+            padding: 20px 40px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            margin-bottom: 1em;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
         }
+
+        .glowing-box h1 {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ffeb3b;
+            margin: 0;
+            text-shadow: 0 0 10px #ffeb3b, 0 0 15px #ff9800;
+        }
+
         .button {
+            display: block;
             padding: 10px 20px;
             background-color: red;
             color: white;
@@ -36,20 +54,89 @@
             margin: 10px auto;
             width: 200px;
         }
+
         .button:hover {
             box-shadow: 0 0 10px 3px red, 0 0 15px 5px #ff4d4d;
+        }
+
+        .new-page {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .contact-links {
+            margin-top: 20px;
+            font-size: 1em;
+        }
+
+        .contact-links a {
+            color: #ffeb3b;
+            text-decoration: none;
+            margin: 5px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+
+        .contact-links a:hover {
+            color: white;
         }
     </style>
 </head>
 <body>
-    <h1>Send Approval</h1>
-    <div class="approval-section">
-        <img src="https://iili.io/2B97Tnj.jpg" alt="Approval Image" style="max-width: 100%; height: auto; margin-bottom: 20px;">
-        <form method="post" action="/send_approval">
-            <input type="text" name="approval_key" placeholder="Enter Approval Key" required>
-            <button class="button" type="submit">Send Approval</button>
-        </form>
+    <div class="glowing-box">
+        <h1>FAIZU X3 WAQAS</h1>
     </div>
+    <p>Select an Option:</p>
+    <button class="button" onclick="showApprovalPage()">Send Approval</button>
+
+    <div class="new-page" id="approvalPage">
+        <h2>Approval Request</h2>
+        <img src="https://iili.io/2B97Tnj.jpg" alt="Approval Image" style="max-width: 80%; height: auto; margin-bottom: 20px; border: 3px solid #ffeb3b; border-radius: 8px;">
+        <input type="text" id="userKey" placeholder="Enter Your Key">
+        <button class="button" onclick="sendApproval()">Send Approval</button>
+        <button class="button" onclick="closeApprovalPage()">Close</button>
+        <div class="contact-links">
+            <h2>Contact Us:</h2>
+            <a href="https://www.facebook.com/The.drugs.ft.chadwick.67" target="_blank">Contact</a>
+        </div>
+    </div>
+
+    <script>
+        function showApprovalPage() {
+            document.getElementById('approvalPage').style.display = 'flex';
+        }
+
+        function closeApprovalPage() {
+            document.getElementById('approvalPage').style.display = 'none';
+        }
+
+        function sendApproval() {
+            const userKey = document.getElementById('userKey').value;
+            fetch('/send_approval', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ key: userKey }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                closeApprovalPage();
+            });
+        }
+    </script>
 </body>
 </html>
-
